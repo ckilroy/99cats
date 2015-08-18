@@ -1,0 +1,48 @@
+<h1>Cat Form</h1>
+
+<!-- QUESTION are we doing this right? -->
+<form action="<%= @cat.persisted? ? cat_url : cats_url %>" method="post">
+  <input type="hidden" name="_method" value="<%= @cat.persisted? ? "patch" : "post" %>">
+  <label for="cat_name"> Cat Name</label>
+  <input id="cat_name" name="cat[name]" value="<%= @cat.name %>">
+
+  <p>
+    Sex
+    <br>
+      Male <input type="radio" name="cat[sex]" value="M"
+        <%= "checked" if @cat.sex == "M"  %>>
+      Female <input type="radio" name="cat[sex]" value="F"
+        <%= "checked" if @cat.sex == "F"  %>>
+  </p>
+
+  <p>
+    Color
+    <br>
+    <select name="cat[color]">
+      <option></option>
+      <option value="black" <%= "selected" if @cat.color == "black" %>>
+        Black
+      </option>
+      <option value="white" <%= "selected" if @cat.color == "white" %>>
+        White
+      </option>
+      <option value="orange" <%= "selected" if @cat.color == "orange" %>>
+        Orange
+      </option>
+    </select>
+  </p>
+
+  <p>
+    Birthdate
+    <br>
+      <input type="date" name="cat[birth_date]" value="<%= @cat.birth_date %>">
+  </p>
+
+  <label for="cat_description"> Description </label>
+  <textarea id="cat_description" name="cat[description]">
+    <%= @cat.description %>
+  </textarea>
+
+  <button> Submit </button>
+
+</form>
