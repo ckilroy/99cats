@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   #need allow_nil because on subsequent calls to database, will keep instantiating new
   #user object that does not call password=
 
+  has_many :cats
+
   after_initialize :ensure_session_token      # comes BEFORE validation
 
   attr_reader :password     # need for length validation

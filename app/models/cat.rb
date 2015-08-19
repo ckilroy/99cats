@@ -9,6 +9,8 @@ class Cat < ActiveRecord::Base
 
   has_many :cat_rental_requests, dependent: :destroy
 
+  belongs_to :user
+
   def age
     # QUESTION -- BETTER WAY? No
     Time.now.year.to_i - birth_date.to_s[0..3].to_i
