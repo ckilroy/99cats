@@ -21,11 +21,22 @@ class CatRentalRequestsController < ApplicationController
   end
 
   def update
-    debugger
     @cat_rental_request = CatRentalRequest.find(params[:cat_rental_request][:id])
     @cat_rental_request.deny!
 
     render text: "need to work more on this"
+  end
+
+  def approve
+    @cat_rental_request = CatRentalRequest.find(params[:id])
+    @cat_rental_request.approve!
+    render text: "Approved!"
+  end
+
+  def deny
+    @cat_rental_request = CatRentalRequest.find(params[:id])
+    @cat_rental_request.deny!
+    render text: "Denied!"
   end
 
   private

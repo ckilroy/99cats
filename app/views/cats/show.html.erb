@@ -33,12 +33,15 @@
         <%= request.status %>
       </td>
       <td>
-        <form action="<%= cat_rental_request_url %>" method="POST">
+        <form action="<%= approve_cat_rental_request_url(request.id) %>" method="POST">
           <input type="hidden" name="_method" value="PATCH">
-          <input type="hidden"
-                 name="cat_rental_request[status]"
-                 value="<%= request.status %>">
           <button> Approve! </button>
+        </form>
+      </td>
+      <td>
+        <form action="<%= deny_cat_rental_request_url(request.id) %>" method="POST">
+          <input type="hidden" name="_method" value="PATCH">
+          <button> Deny! </button>
         </form>
       </td>
     </tr>

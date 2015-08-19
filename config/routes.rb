@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
 
   resources :cats#, only: [:index, :show]
-  resources :cat_rental_requests do
+  resources :cat_rental_requests, only: [:index, :new, :create, :update] do
     member do
-      patch :approve
+      patch :approve        # post vs. patch?
       patch :deny
     end
   end
+
+  resources :users, only: [:index, :new, :create]
+  resource :session, only: [:create, :new, :destroy]
+  #must specify a single resource, rather than resources
 
 end
 
