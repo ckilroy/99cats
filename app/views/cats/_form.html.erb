@@ -1,8 +1,19 @@
 <h1>Cat Form</h1>
 
-<!-- QUESTION are we doing this right? -->
-<form action="<%= @cat.persisted? ? cat_url : cats_url %>" method="post">
-  <input type="hidden" name="_method" value="<%= @cat.persisted? ? "patch" : "post" %>">
+<% unless @cat.errors.full_messages.empty? %>
+  <% @cat.errors.full_messages.each do |message| %>
+    <%= message %>
+  <% end %>
+<% end %>
+
+<% action = (@cat.persisted? ? cat_url : cats_url) %>
+<% value = (@cat.persisted? ? "patch" : "post")%>
+
+<form action="<%= action %>" method="post">
+  <!-- < #action is the GET url %> -->
+  <!-- will call the create method, because method = "Post", on /cats URL-->
+
+  <input type="hidden" name="_method" value="<%= value %>">
   <input type="hidden"
          name="authenticity_token"
          value="<%= form_authenticity_token %>">

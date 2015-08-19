@@ -1,11 +1,13 @@
 class CatRentalRequest < ActiveRecord::Base
-  validates :cat_id, :start_date, :end_date, :status, presence: true
+  validates :cat_id, :start_date, :end_date, :status, :user_id, presence: true
   validates :status, inclusion: { in: %w(PENDING APPROVED DENIED),
       message: "#status isn't valid!" }
 
   validate :not_overlapping_approved_requests     # validates need attribute
 
   belongs_to :cat
+
+  belongs_to :user
 
   def after_initialize
     self.status ||= 'PENDING'

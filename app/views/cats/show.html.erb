@@ -1,3 +1,11 @@
+<h1>Here's the Cats</h1>
+
+<% unless @cat.errors.full_messages.empty? %>
+  <% @cat.errors.full_messages.each do |message| %>
+    <%= message %>
+  <% end %>
+<% end %>
+
 <table>
   <tr>
     <th>Age</th>
@@ -20,6 +28,7 @@
     <th>Start Date</th>
     <th>End Date</th>
     <th>Status</th>
+    <th>Requester</th>
   </tr>
   <% @cat.cat_rental_requests.order(start_date: :asc).each do |request| %>
     <tr>
@@ -33,23 +42,28 @@
         <%= request.status %>
       </td>
       <td>
-        <form action="<%= approve_cat_rental_request_url(request.id) %>" method="POST">
-          <input type="hidden"
-                 name="authenticity_token"
-                 value="<%= form_authenticity_token %>">
-          <input type="hidden" name="_method" value="PATCH">
-          <button> Approve! </button>
-        </form>
+        <%= request.user.user_name %>
       </td>
-      <td>
-        <form action="<%= deny_cat_rental_request_url(request.id) %>" method="POST">
-          <input type="hidden"
-                 name="authenticity_token"
-                 value="<%= form_authenticity_token %>">
-          <input type="hidden" name="_method" value="PATCH">
-          <button> Deny! </button>
-        </form>
-      </td>
+      <% if current_user.id == @cat.id %>
+        <td>
+          <form action="<%= approve_cat_rental_request_url(request.id) %>" method="POST">
+            <input type="hidden"
+                   name="authenticity_token"
+                   value="<%= form_authenticity_token %>">
+            <input type="hidden" name="_method" value="PATCH">
+            <button> Approve! </button>
+          </form>
+        </td>
+        <td>
+          <form action="<%= deny_cat_rental_request_url(request.id) %>" method="POST">
+            <input type="hidden"
+                   name="authenticity_token"
+                   value="<%= form_authenticity_token %>">
+            <input type="hidden" name="_method" value="PATCH">
+            <button> Deny! </button>
+          </form>
+        </td>
+      <% end %>
     </tr>
   <% end %>
 </table>

@@ -1,11 +1,6 @@
 class CatsController < ApplicationController
 
-  before_action :check_editor_owns_cat, only: [:edit, :update]
-
-  def check_editor_owns_cat
-    @cat = Cat.find(params[:id])
-    redirect_to cats_url unless current_user.id == @cat.user_id
-  end
+  before_action :check_cat_ownership, only: [:edit, :update]
 
   def index
     @cat = Cat.all
@@ -22,33 +17,31 @@ class CatsController < ApplicationController
   def edit
     @cat = Cat.find(params[:id])    # do we need to call update anywhere or template does this
 
-    render :_form
+    render :edit
   end
 
   def new               # this is here so we can access creation from cats/new
     @cat = Cat.new     # so populates fields with empty attributes and doesnt throw error
 
-    render :_form
+    render :new
   end
 
   def create
-    @cat = Cat.new(cat_params)
-    @cat.user_id = current_user.id if current_user
+    @cat = current_user.cats.new(cat_params)
+    # create by association instead -- though will override user_id if permitted
+    # make new cat associated with that user, with foreign_key user_id
+    # Preferred, because don't want strangers creating cats.
 
-    if @cat.save
-      render :show
-    else
-      render @cat.errors.full_messages
-    end
+    @cat.save ? render(:show) : render(:new)
   end
 
   def update
     @cat = Cat.find(params[:id])
 
-    if @cat.update_attributes(cat_params)
+    if @cat.update(cat_params)
       render :show
     else
-      render @cat.errors.full_messages
+      render :new
     end
   end
 

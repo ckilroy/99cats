@@ -1,11 +1,14 @@
 class User < ActiveRecord::Base
   validates :user_name, :password_digest, :session_token, presence: true
   validates :session_token, uniqueness: true
-  #validates :password#, length: { minumum: 6, allow_nil: true }
+  # validates :password, length: { minumum: 6 }, allow_nil: true
+  # REFACTOR -- why not work?
+
   #need allow_nil because on subsequent calls to database, will keep instantiating new
   #user object that does not call password=
 
   has_many :cats
+  has_many :cat_rental_requests
 
   after_initialize :ensure_session_token      # comes BEFORE validation
 
@@ -13,8 +16,8 @@ class User < ActiveRecord::Base
 
   def reset_session_token!
     self.session_token = SecureRandom::urlsafe_base64
-    self.update_attributes(session_token: session_token)
-    # QUESTION: needs to persist to database!!
+    self.save!
+    # save! to persist. when not checking if worked, bang version
   end
 
   def ensure_session_token

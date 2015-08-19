@@ -23,4 +23,14 @@ class ApplicationController < ActionController::Base
     redirect_to cats_url if current_user
   end
 
+  def check_cat_ownership
+    if params[:controller] == "cats"
+      @cat = Cat.find(params[:id])
+    elsif params[:controller] == "cat_rental_requests"
+      @cat = CatRentalRequest.find(params[:id]).cat
+    end
+
+    redirect_to cats_url unless current_user.id == @cat.user_id
+  end
+
 end

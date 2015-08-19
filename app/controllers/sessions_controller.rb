@@ -18,14 +18,11 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    current_user && current_user.reset_session_token!
-      # QUESTION: how to handle this? should reset to nil or regenerate?
+    current_user.try(:reset_session_token!)
+    # current_user && current_user.reset_session_token!
     session[:token] = nil
 
     redirect_to new_session_url
   end
 
-  # def session_params
-  #   params.require(:user).permit(:user_name, :password)
-  # end
 end
