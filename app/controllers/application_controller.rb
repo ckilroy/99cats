@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 
-  # protect_from_forgery with: :exception
+  protect_from_forgery with: :exception
 
   helper_method :current_user
   # makes available to views. available to other controllers by default
@@ -12,6 +12,15 @@ class ApplicationController < ActionController::Base
       # by default, not allowing NULL tokens -- but added security measure
     @user ||= User.find_by(session_token: session[:token])
       # QUESTION: should this refer to same @user instance var in SessionsController??
+  end
+
+  def login_user!(user)
+    user.reset_session_token!           # this is a log_in! method
+    session[:token] = user.session_token
+  end
+
+  def redirect_to_index_if_signed_in
+    redirect_to cats_url if current_user
   end
 
 end

@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+    before_action :redirect_to_index_if_signed_in, except: [:destroy]
 
   def new
     render :new
@@ -11,8 +12,7 @@ class SessionsController < ApplicationController
     if @user.nil?
       render :new
     else
-      @user.reset_session_token!           # this is a log_in! method
-      session[:token] = @user.session_token
+      login_user!(@user)
       redirect_to cats_url
     end
   end

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+#QUESTION - why would we need a before_action in the UserController?
 
   def new
     @user = User.new        # so can pre-fill attr, call errors, etc.
