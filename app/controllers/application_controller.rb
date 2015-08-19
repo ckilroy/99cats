@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   # makes available to views. available to other controllers by default
 
   def current_user
-    return nil if self.session[:session_token].nil?
+    return nil if session[:token].nil?
       # by default, not allowing NULL tokens -- but added security measure
-    @user ||= User.find_by(:session_token = self.session[:session_token])
+    @user ||= User.find_by(session_token: session[:token])
       # QUESTION: should this refer to same @user instance var in SessionsController??
   end
 

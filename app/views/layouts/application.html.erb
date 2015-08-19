@@ -8,6 +8,20 @@
 </head>
 <body>
 
+  <% if current_user %>
+
+  <%= "Hello, dear #{current_user.user_name}" %>
+  <form action="<%= session_url %>" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button> Log Out </button>
+  </form>
+
+  <% else %>
+
+  <%= "Please log in." %>
+
+  <% end %>
+
 <%= yield %>
 
 </body>
